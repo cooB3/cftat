@@ -160,14 +160,13 @@
             border-bottom: 2px solid var(--primary-blue);
         }
 
-        /* عنوان الشهر في الشاشة */
         .month-title {
-            font-size: 0.95rem; /* تم تصغيره لمنع القَص */
+            font-size: 1.1rem;
             font-weight: 800;
             color: var(--primary-blue);
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
         .action-btns {
@@ -284,15 +283,15 @@
 
         footer {
             text-align: center;
-            padding: 8px;
+            padding: 12px;
             color: #64748b;
-            font-size: 0.65rem; /* تصغير خط الحقوق للأسفل */
+            font-size: 0.7rem;
             font-weight: 600;
             margin-top: 5px;
         }
 
         /* ==========================================
-           تنسيقات تصدير الـ PDF - مُحسّنة بدون قَص
+           تنسيقات تصدير الـ PDF
            ========================================== */
         .pdf-export-mode {
             background: #ffffff !important;
@@ -309,16 +308,15 @@
         }
 
         .pdf-export-mode .month-header {
-            margin-bottom: 4px !important;
-            padding-bottom: 2px !important;
+            margin-bottom: 6px !important;
+            padding-bottom: 4px !important;
             border-bottom: 1.5px solid #0284c7 !important;
             justify-content: center !important;
             text-align: center !important;
         }
 
-        /* عنوان الـ PDF مصغر وممركز */
         .pdf-export-mode .month-title {
-            font-size: 0.82rem !important; 
+            font-size: 0.95rem !important; 
             font-weight: 800 !important;
             color: #0284c7 !important;
             width: 100% !important;
@@ -338,40 +336,39 @@
             background-color: #334155 !important;
             color: #ffffff !important;
             border: 1px solid #1e293b !important;
-            padding: 3px 1px !important;
-            font-size: 0.68rem !important;
+            padding: 4px 1px !important;
+            font-size: 0.72rem !important;
             -webkit-print-color-adjust: exact;
         }
 
         .pdf-export-mode .th-time {
-            font-size: 0.58rem !important;
+            font-size: 0.62rem !important;
             color: #38bdf8 !important;
         }
 
         .pdf-export-mode td {
             border: 1px solid #64748b !important;
-            padding: 2px 1px !important;
-            height: 22px !important;
+            padding: 3px 1px !important;
+            height: 24px !important;
         }
 
-        .pdf-export-mode .day-cell { font-size: 0.65rem !important; }
-        .pdf-export-mode .hijri-date { font-size: 0.60rem !important; }
-        .pdf-export-mode .greg-date { font-size: 0.56rem !important; }
+        .pdf-export-mode .day-cell { font-size: 0.68rem !important; }
+        .pdf-export-mode .hijri-date { font-size: 0.64rem !important; }
+        .pdf-export-mode .greg-date { font-size: 0.60rem !important; }
 
         .pdf-export-mode .group-pill {
             -webkit-print-color-adjust: exact;
-            font-size: 0.65rem !important;
-            padding: 1px 2px !important;
-            line-height: 1.1 !important;
+            font-size: 0.68rem !important;
+            padding: 2px 2px !important;
+            line-height: 1.2 !important;
         }
 
-        /* حقوق الـ PDF مصغرة في الأسفل */
         .pdf-footer {
             display: none;
             text-align: center;
-            font-size: 0.58rem !important;
+            font-size: 0.65rem;
             color: #475569;
-            margin-top: 4px;
+            margin-top: 6px;
             font-weight: 700;
         }
 
