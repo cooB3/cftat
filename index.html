@@ -161,9 +161,9 @@
         }
 
         .month-title {
-            font-size: 1.05rem;
+            font-size: 1.1rem;
             font-weight: 800;
-            color: var(--text-main);
+            color: var(--primary-blue);
             display: flex;
             align-items: center;
             gap: 8px;
@@ -205,7 +205,7 @@
         .table-wrapper {
             overflow-x: auto;
             border-radius: 6px;
-            border: 1.5px solid #0f172a;
+            border: 1.5px solid #334155;
         }
 
         table {
@@ -223,8 +223,9 @@
             height: 48px;
         }
 
+        /* تعديل رأس الجدول للون الرمادي الداكن والأنيق */
         th {
-            background: #0f172a;
+            background: #334155;
             color: #ffffff;
             font-weight: 800;
             font-size: 0.85rem;
@@ -235,7 +236,7 @@
             font-size: 0.72rem;
             color: #38bdf8;
             display: block;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .day-cell {
@@ -291,7 +292,7 @@
         }
 
         /* ==========================================
-           تنسيقات مشددة ومحدثة لملء صفحة الـ PDF (A4)
+           تنسيقات تصدير الـ PDF
            ========================================== */
         .pdf-export-mode {
             background: #ffffff !important;
@@ -308,13 +309,15 @@
         }
 
         .pdf-export-mode .month-header {
-            margin-bottom: 2px !important;
-            padding-bottom: 2px !important;
-            border-bottom: 1.5px solid #0284c7 !important;
+            margin-bottom: 6px !important;
+            padding-bottom: 4px !important;
+            border-bottom: 2px solid #0284c7 !important;
         }
 
         .pdf-export-mode .month-title {
-            font-size: 0.85rem !important;
+            font-size: 1.1rem !important;
+            font-weight: 800 !important;
+            color: #0284c7 !important;
         }
 
         .pdf-export-mode .action-btns {
@@ -322,23 +325,23 @@
         }
 
         .pdf-export-mode table {
-            border: 1px solid #000000 !important;
+            border: 1px solid #334155 !important;
         }
 
         .pdf-export-mode th {
-            background: #0f172a !important;
+            background-color: #334155 !important; /* لون رمادي slate داكن واضّح */
             color: #ffffff !important;
-            border: 1px solid #000000 !important;
-            padding: 3px 1px !important;
-            font-size: 0.68rem !important;
+            border: 1px solid #1e293b !important;
+            padding: 4px 1px !important;
+            font-size: 0.72rem !important;
             -webkit-print-color-adjust: exact;
         }
 
         .pdf-export-mode .th-time {
-            font-size: 0.58rem !important;
+            font-size: 0.62rem !important;
+            color: #38bdf8 !important; /* أزرق سماوي مشع وواضح على الرمادي */
         }
 
-        /* زيادة ارتفاع الصفوف في PDF لملء الصفحة بنجاح */
         .pdf-export-mode td {
             border: 1px solid #64748b !important;
             padding: 3px 1px !important;
@@ -359,9 +362,9 @@
         .pdf-footer {
             display: none;
             text-align: center;
-            font-size: 0.6rem;
+            font-size: 0.65rem;
             color: #475569;
-            margin-top: 2px;
+            margin-top: 6px;
             font-weight: 700;
         }
 
@@ -398,7 +401,7 @@
     <div id="scheduleContainer"></div>
 
     <footer>
-        <p>جميع الحقوق محفوظة © 2026 | تصميم <span style="color: var(--primary-blue);">أبو مرزوق</span></p>
+        <p>جميع الحقوق محفوظة © 2026 | إعداد أبو مرزوق</p>
     </footer>
 
 </div>
@@ -508,7 +511,7 @@
             card.innerHTML = `
                 <div class="month-header">
                     <div class="month-title">
-                        <i class="fa-solid fa-calendar-days" style="color: var(--primary-blue);"></i> جدول شهر ${tMonth.monthName} ${tMonth.year} هـ
+                        <i class="fa-solid fa-calendar-days" style="color: var(--primary-blue);"></i> جدول ورديات شهر ${tMonth.monthName} ${tMonth.year} هـ
                     </div>
                     <div class="action-btns">
                         <button class="btn-action btn-pdf" onclick="downloadPDF('${monthKey}', '${tMonth.monthName} ${tMonth.year}')">
@@ -534,7 +537,7 @@
                     </table>
                 </div>
                 <div class="pdf-footer">
-                    جميع الحقوق محفوظة © 2026 | تصميم أبو مرزوق
+                    جميع الحقوق محفوظة © 2026 | إعداد أبو مرزوق
                 </div>
             `;
 
@@ -600,7 +603,7 @@
 
         const opt = {
             margin:       [2, 2, 2, 2],
-            filename:     `جدول_شفتات_${monthTitleStr.replace(/\s+/g, '_')}.pdf`,
+            filename:     `جدول_ورديات_${monthTitleStr.replace(/\s+/g, '_')}.pdf`,
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { 
                 scale: 2, 
@@ -625,10 +628,9 @@
         const card = document.getElementById(`card-${monthKey}`);
         const table = card.querySelector('table');
         
-        // استخراج البيانات وتنسيقها للـ Excel
         let excelData = [];
-        excelData.push([`جدول شهر ${monthTitleStr} هـ`]);
-        excelData.push([]); // سطر فارغ
+        excelData.push([`جدول ورديات شهر ${monthTitleStr} هـ`]);
+        excelData.push([]);
         excelData.push(["اليوم", "التاريخ الهجري", "التاريخ الميلادي", "الصباح (06:00 ص - 02:00 ظ)", "الظهر (02:00 ظ - 10:00 م)", "الليل (10:00 م - 06:00 ص)"]);
 
         const rows = table.querySelectorAll('tbody tr');
@@ -646,21 +648,21 @@
         const wb = XLSX.utils.book_new();
         const ws = XLSX.utils.aoa_to_sheet(excelData);
 
-        // ضبط إتجاه الورقة من اليمين إلى اليسار
         if (!ws['!views']) ws['!views'] = [];
         ws['!views'].push({ RTL: true });
 
-        // تحديد عرض الأعمدة
         ws['!cols'] = [
-            { wch: 12 }, // اليوم
-            { wch: 18 }, // الهجري
-            { wch: 18 }, // الميلادي
-            { wch: 28 }, // الصباح
-            { wch: 28 }, // الظهر
-            { wch: 28 }  // الليل
+            { wch: 12 },
+            { wch: 18 },
+            { wch: 18 },
+            { wch: 28 },
+            { wch: 28 },
+            { wch: 28 }
         ];
 
         XLSX.utils.book_append_sheet(wb, ws, "الشفتات الشهري");
-        XLSX.writeFile(wb, `جدول_شفتات_${monthTitleStr.replace(/\s+/g, '_')}.xlsx`);
+        XLSX.writeFile(wb, `جدول_ورديات_${monthTitleStr.replace(/\s+/g, '_')}.xlsx`);
     }
 </script>
+</body>
+</html>
