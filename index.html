@@ -223,7 +223,6 @@
             height: 48px;
         }
 
-        /* تعديل رأس الجدول للون الرمادي الداكن والأنيق */
         th {
             background: #334155;
             color: #ffffff;
@@ -292,7 +291,7 @@
         }
 
         /* ==========================================
-           تنسيقات تصدير الـ PDF
+           تنسيقات تصدير الـ PDF المحدثة
            ========================================== */
         .pdf-export-mode {
             background: #ffffff !important;
@@ -311,13 +310,19 @@
         .pdf-export-mode .month-header {
             margin-bottom: 6px !important;
             padding-bottom: 4px !important;
-            border-bottom: 2px solid #0284c7 !important;
+            border-bottom: 1.5px solid #0284c7 !important;
+            justify-content: center !important; /* توسيط الهيدر في PDF */
+            text-align: center !important;
         }
 
+        /* تصدير العنوان بـ PDF: خط أصغر ومُنسّق في المنتصف */
         .pdf-export-mode .month-title {
-            font-size: 1.1rem !important;
+            font-size: 0.95rem !important; 
             font-weight: 800 !important;
             color: #0284c7 !important;
+            width: 100% !important;
+            justify-content: center !important;
+            text-align: center !important;
         }
 
         .pdf-export-mode .action-btns {
@@ -329,7 +334,7 @@
         }
 
         .pdf-export-mode th {
-            background-color: #334155 !important; /* لون رمادي slate داكن واضّح */
+            background-color: #334155 !important;
             color: #ffffff !important;
             border: 1px solid #1e293b !important;
             padding: 4px 1px !important;
@@ -339,7 +344,7 @@
 
         .pdf-export-mode .th-time {
             font-size: 0.62rem !important;
-            color: #38bdf8 !important; /* أزرق سماوي مشع وواضح على الرمادي */
+            color: #38bdf8 !important;
         }
 
         .pdf-export-mode td {
@@ -623,7 +628,7 @@
         });
     }
 
-    // دالة التصدير إلى Excel مع المحافظة على التنسيق والاتجاه
+    // دالة التصدير إلى Excel
     function downloadExcel(monthKey, monthTitleStr) {
         const card = document.getElementById(`card-${monthKey}`);
         const table = card.querySelector('table');
