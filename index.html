@@ -160,13 +160,14 @@
             border-bottom: 2px solid var(--primary-blue);
         }
 
+        /* عنوان الشهر في الشاشة */
         .month-title {
-            font-size: 1.1rem;
+            font-size: 0.95rem; /* تم تصغيره لمنع القَص */
             font-weight: 800;
             color: var(--primary-blue);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .action-btns {
@@ -283,15 +284,15 @@
 
         footer {
             text-align: center;
-            padding: 12px;
+            padding: 8px;
             color: #64748b;
-            font-size: 0.8rem;
-            font-weight: 700;
+            font-size: 0.65rem; /* تصغير خط الحقوق للأسفل */
+            font-weight: 600;
             margin-top: 5px;
         }
 
         /* ==========================================
-           تنسيقات تصدير الـ PDF المحدثة
+           تنسيقات تصدير الـ PDF - مُحسّنة بدون قَص
            ========================================== */
         .pdf-export-mode {
             background: #ffffff !important;
@@ -308,16 +309,16 @@
         }
 
         .pdf-export-mode .month-header {
-            margin-bottom: 6px !important;
-            padding-bottom: 4px !important;
+            margin-bottom: 4px !important;
+            padding-bottom: 2px !important;
             border-bottom: 1.5px solid #0284c7 !important;
-            justify-content: center !important; /* توسيط الهيدر في PDF */
+            justify-content: center !important;
             text-align: center !important;
         }
 
-        /* تصدير العنوان بـ PDF: خط أصغر ومُنسّق في المنتصف */
+        /* عنوان الـ PDF مصغر وممركز */
         .pdf-export-mode .month-title {
-            font-size: 0.95rem !important; 
+            font-size: 0.82rem !important; 
             font-weight: 800 !important;
             color: #0284c7 !important;
             width: 100% !important;
@@ -337,39 +338,40 @@
             background-color: #334155 !important;
             color: #ffffff !important;
             border: 1px solid #1e293b !important;
-            padding: 4px 1px !important;
-            font-size: 0.72rem !important;
+            padding: 3px 1px !important;
+            font-size: 0.68rem !important;
             -webkit-print-color-adjust: exact;
         }
 
         .pdf-export-mode .th-time {
-            font-size: 0.62rem !important;
+            font-size: 0.58rem !important;
             color: #38bdf8 !important;
         }
 
         .pdf-export-mode td {
             border: 1px solid #64748b !important;
-            padding: 3px 1px !important;
-            height: 24px !important;
+            padding: 2px 1px !important;
+            height: 22px !important;
         }
 
-        .pdf-export-mode .day-cell { font-size: 0.68rem !important; }
-        .pdf-export-mode .hijri-date { font-size: 0.64rem !important; }
-        .pdf-export-mode .greg-date { font-size: 0.60rem !important; }
+        .pdf-export-mode .day-cell { font-size: 0.65rem !important; }
+        .pdf-export-mode .hijri-date { font-size: 0.60rem !important; }
+        .pdf-export-mode .greg-date { font-size: 0.56rem !important; }
 
         .pdf-export-mode .group-pill {
             -webkit-print-color-adjust: exact;
-            font-size: 0.68rem !important;
-            padding: 2px 2px !important;
-            line-height: 1.2 !important;
+            font-size: 0.65rem !important;
+            padding: 1px 2px !important;
+            line-height: 1.1 !important;
         }
 
+        /* حقوق الـ PDF مصغرة في الأسفل */
         .pdf-footer {
             display: none;
             text-align: center;
-            font-size: 0.65rem;
+            font-size: 0.58rem !important;
             color: #475569;
-            margin-top: 6px;
+            margin-top: 4px;
             font-weight: 700;
         }
 
@@ -401,12 +403,13 @@
             <label for="startDateInput">تاريخ بداية (صباح) المجموعة الأولى:</label>
             <input type="date" id="startDateInput">
         </div>
+    </div>
+
     <div id="scheduleContainer"></div>
 
-<footer>
-    <p style="font-size: 0.4rem; color: #64748b; text-align: center;"> جميع الحقوق محفوظة © 2026 | إعداد فهد المخلفي</p>
-</footer>
-
+    <footer>
+        <p>جميع الحقوق محفوظة © 2026 | إعداد فهد المخلفي</p>
+    </footer>
 
 </div>
 
@@ -540,11 +543,8 @@
                         <tbody></tbody>
                     </table>
                 </div>
-                <div id="scheduleContainer"></div>
-
-<footer>
-    <p style="font-size: 0.7rem; color: #64748b; text-align: center;"> جميع الحقوق محفوظة © 2026 | إعداد فهد المخلفي</p>
-</footer>
+                <div class="pdf-footer">
+                    جميع الحقوق محفوظة © 2026 | إعداد فهد المخلفي
                 </div>
             `;
 
