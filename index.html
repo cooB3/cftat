@@ -12,8 +12,8 @@
     <!-- مكتبة تحويل HTML إلى PDF مباشر -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
-    <!-- مكتبة تصدير Excel -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- مكتبة تصدير Excel المحسنة بدعم التنسيقات والألوان -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
 
     <style>
         :root {
@@ -290,9 +290,7 @@
             margin-top: 5px;
         }
 
-        /* ==========================================
-           تنسيقات تصدير الـ PDF
-           ========================================== */
+        /* تنسيقات PDF */
         .pdf-export-mode {
             background: #ffffff !important;
             padding: 2px !important;
@@ -415,16 +413,19 @@
     const hijriMonths = ["محرم", "صفر", "ربيع الأول", "ربيع الثاني", "جمادى الأولى", "جمادى الآخرة", "رجب", "شعبان", "رمضان", "شوال", "ذو القعدة", "ذو الحجة"];
 
     const groups = [
-        { name: 'الأولى', cssClass: 'g-1', index: 0 },
-        { name: 'الثانية', cssClass: 'g-2', index: 4 },
-        { name: 'الثالثة', cssClass: 'g-3', index: 3 },
-        { name: 'الرابعة', cssClass: 'g-4', index: 2 },
-        { name: 'الخامسة', cssClass: 'g-5', index: 1 }
+        { name: 'الأولى', cssClass: 'g-1', hexColor: '0284C7', index: 0 },
+        { name: 'الثانية', cssClass: 'g-2', hexColor: 'D97706', index: 4 },
+        { name: 'الثالثة', cssClass: 'g-3', hexColor: '7C3AED', index: 3 },
+        { name: 'الرابعة', cssClass: 'g-4', hexColor: '059669', index: 2 },
+        { name: 'الخامسة', cssClass: 'g-5', hexColor: 'DC2626', index: 1 }
     ];
 
     function getHijriDetails(dateObj) {
+        const tempDate = new Date(dateObj.getTime());
+        tempDate.setHours(12, 0, 0, 0);
+
         const formatter = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', { day: 'numeric', month: 'numeric', year: 'numeric' });
-        const parts = formatter.formatToParts(dateObj);
+        const parts = formatter.formatToParts(tempDate);
         let d, m, y;
         parts.forEach(item => {
             if (item.type === 'day') d = parseInt(item.value, 10);
@@ -484,12 +485,13 @@
         startDateInput.value = savedStartDate;
 
         const startParts = savedStartDate.split('-');
-        const baseStartDate = new Date(startParts[0], startParts[1] - 1, startParts[2]);
+        const baseStartDate = new Date(startParts[0], startParts[1] - 1, startParts[2], 12, 0, 0, 0);
 
         const container = document.getElementById('scheduleContainer');
         container.innerHTML = '';
 
         const today = new Date();
+        today.setHours(12, 0, 0, 0);
         const currentHijri = getHijriDetails(today);
         let targetMonths = [];
 
@@ -548,8 +550,8 @@
             const tbody = card.querySelector('tbody');
             let rowsHTML = '';
 
-            for (let i = -365; i <= 730; i++) {
-                const currentDate = new Date(baseStartDate);
+            for (let i = -400; i <= 800; i++) {
+                const currentDate = new Date(baseStartDate.getTime());
                 currentDate.setDate(baseStartDate.getDate() + i);
 
                 const hDetails = getHijriDetails(currentDate);
@@ -599,23 +601,15 @@
         generateViewSchedule();
     });
 
-    // دالة التصدير إلى PDF
     function downloadPDF(monthKey, monthTitleStr) {
         const element = document.getElementById(`card-${monthKey}`);
-        
         element.classList.add('pdf-export-mode');
 
         const opt = {
             margin:       [2, 2, 2, 2],
             filename:     `جدول_ورديات_${monthTitleStr.replace(/\s+/g, '_')}.pdf`,
             image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { 
-                scale: 2, 
-                useCORS: true, 
-                logging: false,
-                scrollX: 0,
-                scrollY: 0
-            },
+            html2canvas:  { scale: 2, useCORS: true, logging: false, scrollX: 0, scrollY: 0 },
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
@@ -627,15 +621,60 @@
         });
     }
 
-    // دالة التصدير إلى Excel
+    // دالة تصدير Excel المعدلة كلياً مع التنسيق والألوان والتحديد
     function downloadExcel(monthKey, monthTitleStr) {
         const card = document.getElementById(`card-${monthKey}`);
         const table = card.querySelector('table');
         
-        let excelData = [];
-        excelData.push([`جدول ورديات شهر ${monthTitleStr} هـ`]);
-        excelData.push([]);
-        excelData.push(["اليوم", "التاريخ الهجري", "التاريخ الميلادي", "الصباح (06:00 ص - 02:00 ظ)", "الظهر (02:00 ظ - 10:00 م)", "الليل (10:00 م - 06:00 ص)"]);
+        const thinBorder = {
+            top: { style: "thin", color: { rgb: "94A3B8" } },
+            bottom: { style: "thin", color: { rgb: "94A3B8" } },
+            left: { style: "thin", color: { rgb: "94A3B8" } },
+            right: { style: "thin", color: { rgb: "94A3B8" } }
+        };
+
+        const titleStyle = {
+            font: { name: "Cairo", sz: 14, bold: true, color: { rgb: "0284C7" } },
+            alignment: { horizontal: "center", vertical: "center" }
+        };
+
+        const headerStyle = {
+            font: { name: "Cairo", sz: 11, bold: true, color: { rgb: "FFFFFF" } },
+            fill: { fgColor: { rgb: "334155" } },
+            alignment: { horizontal: "center", vertical: "center", wrapText: true },
+            border: thinBorder
+        };
+
+        const defaultCellStyle = {
+            font: { name: "Cairo", sz: 10 },
+            alignment: { horizontal: "center", vertical: "center" },
+            border: thinBorder
+        };
+
+        const dayCellStyle = {
+            font: { name: "Cairo", sz: 10, bold: true },
+            fill: { fgColor: { rgb: "F1F5F9" } },
+            alignment: { horizontal: "center", vertical: "center" },
+            border: thinBorder
+        };
+
+        let wsData = [];
+        
+        // العنوان
+        wsData.push([{ v: `جدول ورديات شهر ${monthTitleStr} هـ`, s: titleStyle }]);
+        wsData.push([]); // سطر فارغ
+
+        // رؤوس الأعمدة
+        const headers = [
+            "اليوم",
+            "التاريخ الهجري",
+            "التاريخ الميلادي",
+            "الصباح\n(06:00 ص - 02:00 ظ)",
+            "الظهر\n(02:00 ظ - 10:00 م)",
+            "الليل\n(10:00 م - 06:00 ص)"
+        ];
+
+        wsData.push(headers.map(h => ({ v: h, s: headerStyle })));
 
         const rows = table.querySelectorAll('tbody tr');
         rows.forEach(row => {
@@ -646,24 +685,79 @@
             const afternoon = row.cells[3].innerText.trim();
             const night = row.cells[4].innerText.trim();
 
-            excelData.push([day, hijri, greg, morning, afternoon, night]);
+            function getGroupStyle(groupName) {
+                const grp = groups.find(g => g.name === groupName);
+                if (grp) {
+                    return {
+                        font: { name: "Cairo", sz: 10, bold: true, color: { rgb: "FFFFFF" } },
+                        fill: { fgColor: { rgb: grp.hexColor } },
+                        alignment: { horizontal: "center", vertical: "center" },
+                        border: thinBorder
+                    };
+                }
+                return defaultCellStyle;
+            }
+
+            wsData.push([
+                { v: day, s: dayCellStyle },
+                { v: hijri, s: defaultCellStyle },
+                { v: greg, s: defaultCellStyle },
+                { v: morning, s: getGroupStyle(morning) },
+                { v: afternoon, s: getGroupStyle(afternoon) },
+                { v: night, s: getGroupStyle(night) }
+            ]);
         });
 
-        const wb = XLSX.utils.book_new();
-        const ws = XLSX.utils.aoa_to_sheet(excelData);
+        const ws = XLSX.utils.aoa_to_sheet([]);
+        
+        // تعبئة البيانات والخلايا
+        wsData.forEach((row, rIdx) => {
+            row.forEach((cell, cIdx) => {
+                const cellRef = XLSX.utils.encode_cell({ r: rIdx, c: cIdx });
+                if (typeof cell === 'object') {
+                    ws[cellRef] = cell;
+                } else {
+                    ws[cellRef] = { v: cell, s: defaultCellStyle };
+                }
+            });
+        });
 
+        // نطاق الصفحة
+        ws['!ref'] = XLSX.utils.encode_range({
+            s: { r: 0, c: 0 },
+            e: { r: wsData.length - 1, c: 5 }
+        });
+
+        // إعداد اتجاه اليمين لليار (RTL)
         if (!ws['!views']) ws['!views'] = [];
         ws['!views'].push({ RTL: true });
 
+        // عرض الأعمدة
         ws['!cols'] = [
-            { wch: 12 },
-            { wch: 18 },
-            { wch: 18 },
-            { wch: 28 },
-            { wch: 28 },
-            { wch: 28 }
+            { wch: 14 },
+            { wch: 20 },
+            { wch: 20 },
+            { wch: 26 },
+            { wch: 26 },
+            { wch: 26 }
         ];
 
+        // ارتفاع الأسطر
+        ws['!rows'] = [
+            { hpt: 30 }, // العنوان
+            { hpt: 15 }, // فارغ
+            { hpt: 28 }  // الهيدر
+        ];
+        for (let i = 3; i < wsData.length; i++) {
+            ws['!rows'].push({ hpt: 24 });
+        }
+
+        // دمج خلية العنوان الرئيسية
+        ws['!merges'] = [
+            { s: { r: 0, c: 0 }, e: { r: 0, c: 5 } }
+        ];
+
+        const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "الشفتات الشهري");
         XLSX.writeFile(wb, `جدول_ورديات_${monthTitleStr.replace(/\s+/g, '_')}.xlsx`);
     }
