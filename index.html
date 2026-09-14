@@ -409,6 +409,8 @@
 </div>
 
 <script>
+    const DEFAULT_START_DATE = '2026-09-14'; // الاثنين 14 سبتمبر 2026
+
     const fullDaysOfWeek = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
     const hijriMonths = ["محرم", "صفر", "ربيع الأول", "ربيع الثاني", "جمادى الأولى", "جمادى الآخرة", "رجب", "شعبان", "رمضان", "شوال", "ذو القعدة", "ذو الحجة"];
 
@@ -460,25 +462,12 @@
         return shifts;
     }
 
-    function formatDateToISO(d) {
-        const year = d.getFullYear();
-        const month = String(d.getMonth() + 1).padStart(2, '0');
-        const day = String(d.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }
-
-    function getTomorrowISO() {
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        return formatDateToISO(tomorrow);
-    }
-
     function generateViewSchedule() {
         const startDateInput = document.getElementById('startDateInput');
         
         let savedStartDate = localStorage.getItem('abumarzook_5group_order_a_h_d_g_b');
         if (!savedStartDate) {
-            savedStartDate = getTomorrowISO();
+            savedStartDate = DEFAULT_START_DATE;
             localStorage.setItem('abumarzook_5group_order_a_h_d_g_b', savedStartDate);
         }
 
@@ -621,7 +610,6 @@
         });
     }
 
-    // دالة تصدير Excel المعدلة كلياً مع التنسيق والألوان والتحديد
     function downloadExcel(monthKey, monthTitleStr) {
         const card = document.getElementById(`card-${monthKey}`);
         const table = card.querySelector('table');
@@ -660,11 +648,9 @@
 
         let wsData = [];
         
-        // العنوان
         wsData.push([{ v: `جدول ورديات شهر ${monthTitleStr} هـ`, s: titleStyle }]);
-        wsData.push([]); // سطر فارغ
+        wsData.push([]);
 
-        // رؤوس الأعمدة
         const headers = [
             "اليوم",
             "التاريخ الهجري",
@@ -710,7 +696,6 @@
 
         const ws = XLSX.utils.aoa_to_sheet([]);
         
-        // تعبئة البيانات والخلايا
         wsData.forEach((row, rIdx) => {
             row.forEach((cell, cIdx) => {
                 const cellRef = XLSX.utils.encode_cell({ r: rIdx, c: cIdx });
@@ -722,17 +707,14 @@
             });
         });
 
-        // نطاق الصفحة
         ws['!ref'] = XLSX.utils.encode_range({
             s: { r: 0, c: 0 },
             e: { r: wsData.length - 1, c: 5 }
         });
 
-        // إعداد اتجاه اليمين لليار (RTL)
         if (!ws['!views']) ws['!views'] = [];
         ws['!views'].push({ RTL: true });
 
-        // عرض الأعمدة
         ws['!cols'] = [
             { wch: 14 },
             { wch: 20 },
@@ -742,17 +724,15 @@
             { wch: 26 }
         ];
 
-        // ارتفاع الأسطر
         ws['!rows'] = [
-            { hpt: 30 }, // العنوان
-            { hpt: 15 }, // فارغ
-            { hpt: 28 }  // الهيدر
+            { hpt: 30 },
+            { hpt: 15 },
+            { hpt: 28 }
         ];
         for (let i = 3; i < wsData.length; i++) {
             ws['!rows'].push({ hpt: 24 });
         }
 
-        // دمج خلية العنوان الرئيسية
         ws['!merges'] = [
             { s: { r: 0, c: 0 }, e: { r: 0, c: 5 } }
         ];
